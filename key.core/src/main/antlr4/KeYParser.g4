@@ -413,6 +413,7 @@ termParen: LPAREN term RPAREN (attribute)*;
 abbreviation: AT name=simple_ident;
 primitive_term:
     termParen
+  | switchCaseTerm
   | ifThenElseTerm
   | ifExThenElseTerm
   | abbreviation
@@ -523,6 +524,18 @@ single_label
 location_term
 :
     LPAREN obj=equivalence_term COMMA field=equivalence_term RPAREN
+;
+
+switchCaseTerm
+:
+  SWITCH LPAREN term RPAREN LPAREN
+  (((CASE LPAREN matchingTerm RPAREN IMP term)+
+  (DEFAULT IMP term)?) | (DEFAULT IMP term)) RPAREN
+;
+
+matchingTerm
+:
+  IDENT (LPAREN IDENT (COMMA IDENT)* RPAREN)?
 ;
 
 ifThenElseTerm
